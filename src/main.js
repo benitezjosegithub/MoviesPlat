@@ -12,9 +12,8 @@ const api = axios.create({
 async function getTrendingMoviesPreview() {
     const {data,status} = await api('trending/movie/day');
     const movies = data.results;
-
+    trendingMoviesPreviewList.innerHTML='';
     movies.forEach(movie=>{
-        const trendingPevMovContainer= trendingMoviesPreviewList;
         const movieContainer= document.createElement('div');
         const movieImg= document.createElement('Img');
         
@@ -24,7 +23,7 @@ async function getTrendingMoviesPreview() {
         movieImg.setAttribute('src', 'https://image.tmdb.org/t/p/w300'+movie.poster_path);
         
         movieContainer.appendChild(movieImg);
-        trendingPevMovContainer.appendChild(movieContainer);
+        trendingMoviesPreviewList.appendChild(movieContainer);
     })
     console.log({data,movies});
 }
@@ -32,8 +31,9 @@ async function getTrendingMoviesPreview() {
 async function getCategoriesPreviw() {
     const {data,status} = await api('genre/movie/list');
     const categories = data.genres;
+    categoriesPreviewList.innerHTML='';
+    
     categories.forEach(category=>{
-        const prevCatContainer = categoriesPreviewList;
         const categoryContainer= document.createElement('div');
         const categoryTitle= document.createElement('h3');
         const categoryTitleText=document.createTextNode(category.name);
@@ -44,6 +44,6 @@ async function getCategoriesPreviw() {
 
         categoryTitle.appendChild(categoryTitleText);
         categoryContainer.appendChild(categoryTitle);
-        prevCatContainer.appendChild(categoryContainer);
+        categoriesPreviewList.appendChild(categoryContainer);
     })
 }
