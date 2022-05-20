@@ -14,7 +14,7 @@ async function getTrendingMoviesPreview() {
     const movies = data.results;
 
     movies.forEach(movie=>{
-        const trendingPevMovContainer= document.querySelector('#trendingPreview .trendingPreview-movieList');
+        const trendingPevMovContainer= trendingMoviesPreviewList;
         const movieContainer= document.createElement('div');
         const movieImg= document.createElement('Img');
         
@@ -33,7 +33,7 @@ async function getCategoriesPreviw() {
     const {data,status} = await api('genre/movie/list');
     const categories = data.genres;
     categories.forEach(category=>{
-        const prevCatContainer = document.querySelector('#categoriesPreview .categoriesPreview-list');
+        const prevCatContainer = categoriesPreviewList;
         const categoryContainer= document.createElement('div');
         const categoryTitle= document.createElement('h3');
         const categoryTitleText=document.createTextNode(category.name);
@@ -47,5 +47,3 @@ async function getCategoriesPreviw() {
         prevCatContainer.appendChild(categoryContainer);
     })
 }
-getTrendingMoviesPreview()
-getCategoriesPreviw() 
