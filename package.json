@@ -1,0 +1,19 @@
+{
+  "name": "moviplat",
+  "version": "1.0.0",
+  "description": "first commit",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/benitezjosegithub/MoviesPlat.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/benitezjosegithub/MoviesPlat/issues"
+  },
+  "homepage": "https://github.com/benitezjosegithub/MoviesPlat#readme"
+}
