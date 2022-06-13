@@ -42,6 +42,7 @@ function homePage() {
   categoriesPreviewSection.classList.remove('inactive');
   genericSection.classList.add('inactive');
   movieDetailSection.classList.add('inactive');
+  
 
   getTrendingMoviesPreview();
   getCategoriesPreviw();
@@ -74,12 +75,15 @@ function moviesPage() {
   arrowBtn.classList.add('header-arrow--white');
   headerTitle.classList.add('inactive');
   headerCategoryTitle.classList.add('inactive');
-  searchForm.classList.remove('inactive');
+  searchForm.classList.add('inactive');
 
   trendingPreviewSection.classList.add('inactive');
   categoriesPreviewSection.classList.add('inactive');
   genericSection.classList.add('inactive');
   movieDetailSection.classList.remove('inactive');
+
+  const [_,movieId] = location.hash.split('=');
+  getMovieDetailById(movieId);
 }
 function searchPage() {
   headerSection.classList.remove('header-container--long');
