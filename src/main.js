@@ -9,7 +9,18 @@ const api = axios.create({
 });
 
 //utils
-function createSectionMovies(container,movies){
+
+const lazyloader = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+        if(entry.isIntersecting){
+            const img = entry.target;
+            const src = img.getAttribute('data-src');
+            img.setAttribute('src',src);
+            lazyloader.unobserve(img);
+        }
+    })
+});
+function createSectionMovies(container,movies,lazyload=false){
     container.innerHTML=''; 
     movies.forEach(movie=>{
         const movieContainer= document.createElement('div');
@@ -22,8 +33,9 @@ function createSectionMovies(container,movies){
         movieContainer.classList.add('movie-container')
         movieImg.classList.add('movie-img');
         movieImg.setAttribute('alt', movie.title);
-        movieImg.setAttribute('src', 'https://image.tmdb.org/t/p/w300'+movie.poster_path);
+        movieImg.setAttribute(lazyload ? 'data-src': 'src', 'https://image.tmdb.org/t/p/w300'+movie.poster_path);
         
+        if(lazyload) lazyloader.observe(movieImg);
         movieContainer.appendChild(movieImg);
         container.appendChild(movieContainer);
     })
@@ -53,7 +65,7 @@ function createSectionCategory(container,categories){
 //calls APIS
 async function getTrendingMoviesPreview() {
     const {data,status} = await api('trending/movie/day');
-    createSectionMovies(trendingMoviesPreviewList,data.results);
+    createSectionMovies(trendingMoviesPreviewList,data.results,true);
 }
 
 async function getCategoriesPreviw() {
