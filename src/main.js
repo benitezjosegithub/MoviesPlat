@@ -35,7 +35,12 @@ function createSectionMovies(container,movies,lazyload=false){
         movieImg.setAttribute('alt', movie.title);
         movieImg.setAttribute(lazyload ? 'data-src': 'src', 'https://image.tmdb.org/t/p/w300'+movie.poster_path);
         
+        movieImg.addEventListener('error',()=>{
+            movieImg.setAttribute('src','https://via.placeholder.com/300x450');
+        })
+
         if(lazyload) lazyloader.observe(movieImg);
+        
         movieContainer.appendChild(movieImg);
         container.appendChild(movieContainer);
     })
@@ -79,7 +84,7 @@ async function getMoviesByCategory(id) {
             with_genres:id
         }
     });
-    createSectionMovies(genericSection,data.results)
+    createSectionMovies(genericSection,data.results,true);
 }
 
 async function getMoviesBySearch(query) {
