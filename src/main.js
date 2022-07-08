@@ -1,3 +1,4 @@
+//DATA
 const api = axios.create({
   baseURL: "https://api.themoviedb.org/3/",
   headers: {
@@ -7,6 +8,31 @@ const api = axios.create({
     api_key: API_KEY,
   },
 });
+function likedMoviesList(){
+  const item = JSON.parse(localStorage.getItem('likedMovies'));
+  let movies;
+
+  if (item) {
+    movies = item;
+  } else {
+    movies = {};
+  }
+  
+  return movies;
+}
+
+function likeMovie(movie) {
+
+  const likedMovies = likedMoviesList();
+  
+  if (likedMovies[movie.id]) {
+    likedMovies[movie.id] = undefined;
+  } else {
+    likedMovies[movie.id] = movie;
+  }
+
+  localStorage.setItem('likedMovies', JSON.stringify(likedMovies));
+}
 
 //utils
 
@@ -32,9 +58,7 @@ function createSectionMovies(
     const movieContainer = document.createElement("div");
     const movieImg = document.createElement("Img");
 
-    movieContainer.addEventListener("click", () => {
-      location.hash = `#movie=${movie.id}`;
-    });
+    
 
     movieContainer.classList.add("movie-container");
     movieImg.classList.add("movie-img");
@@ -43,14 +67,27 @@ function createSectionMovies(
       lazyload ? "data-src" : "src",
       "https://image.tmdb.org/t/p/w300" + movie.poster_path
     );
+    movieImg.addEventListener("click", () => {
+      location.hash = `#movie=${movie.id}`;
+    });
 
     movieImg.addEventListener("error", () => {
       movieImg.setAttribute("src", "https://via.placeholder.com/300x450");
     });
 
+    const movieBtn = document.createElement("button");
+    movieBtn.classList.add("movie-btn");
+    likedMoviesList()[movie.id] && movieBtn.classList.add('movie-btn--liked');
+    movieBtn.addEventListener("click", () => {
+      movieBtn.classList.toggle("movie-btn--liked");
+      //agregar a localstorage peliculas 
+      likeMovie(movie);
+    }
+      )
     if (lazyload) lazyloader.observe(movieImg);
 
     movieContainer.appendChild(movieImg);
+    movieContainer.appendChild(movieBtn);
     container.appendChild(movieContainer);
   });
 }
@@ -197,4 +234,11 @@ async function getRelateById(id) {
   const { data, status } = await api(`movie/${id}/recommendations`);
 
   createSectionMovies(relatedMoviesContainer, data.results);
+}
+
+async function getLikedMovies() {
+  const likedMovies = likedMoviesList();
+  const moviesArray = Object.values(likedMovies);
+  createSectionMovies(likedMoviesListArticle, moviesArray, {lazyload: false, clean: true});
+  console.log(likedMovies);
 }
