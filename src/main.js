@@ -82,6 +82,7 @@ function createSectionMovies(
       movieBtn.classList.toggle("movie-btn--liked");
       //agregar a localstorage peliculas 
       likeMovie(movie);
+      getLikedMovies();
     }
       )
     if (lazyload) lazyloader.observe(movieImg);
@@ -236,9 +237,16 @@ async function getRelateById(id) {
   createSectionMovies(relatedMoviesContainer, data.results);
 }
 
-async function getLikedMovies() {
+ function getLikedMovies() {
   const likedMovies = likedMoviesList();
+  if (Object.entries(likedMovies).length === 0 && location.hash === '') {
+    likedMoviesSection.classList.add('inactive');
+  }
+  else {
+    if (location.hash === '') {
+      likedMoviesSection.classList.remove('inactive');
+    }
+  }
   const moviesArray = Object.values(likedMovies);
   createSectionMovies(likedMoviesListArticle, moviesArray, {lazyload: false, clean: true});
-  console.log(likedMovies);
 }
