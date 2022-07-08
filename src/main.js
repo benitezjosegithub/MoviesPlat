@@ -234,7 +234,7 @@ async function getMovieDetailById(id) {
 async function getRelateById(id) {
   const { data, status } = await api(`movie/${id}/recommendations`);
 
-  createSectionMovies(relatedMoviesContainer, data.results);
+  createSectionMovies(relatedMoviesContainer, data.results, {lazyload :false, clean : true });
 }
 
  function getLikedMovies() {
